@@ -1,0 +1,21 @@
+version: '2.17.3'
+
+services:
+  mongo:
+    container_name: mongo-shopDB
+    image: mongo:latest
+    environment:
+      - MONGO_DATABASE=shop
+    ports:
+      - 27017:27017
+
+  mongo-express: 
+    container_name: mongo-express-shopDB
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
