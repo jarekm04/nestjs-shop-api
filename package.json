@@ -27,6 +27,7 @@
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
+    "@simplewebauthn/server": "^7.4.0",
     "bcrypt": "^5.1.0",
     "mongoose": "^7.2.1",
     "passport": "^0.6.0",
