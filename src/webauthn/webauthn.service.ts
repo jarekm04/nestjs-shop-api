@@ -106,6 +106,7 @@ export class WebAuthnService {
     return {
       ok: true,
       user: {
+        id: user.id,
         name: user.name,
         email: user.email,
       },
