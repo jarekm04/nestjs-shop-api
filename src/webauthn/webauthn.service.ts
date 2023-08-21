@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simplewebauthn/typescript-types";
 import * as SimpleWebAuthnServer from "@simplewebauthn/server";
 import { UserService } from "src/user/user.service";
@@ -48,6 +48,8 @@ export class WebAuthnService {
 
   async verifyLogin(email: string, data: AuthenticationResponseJSON) {
     const user = await this.userService.findByEmail(email);
+    console.log(user);
+    console.log(data);
 
     if (user == null) {
       return { ok: false };
@@ -66,14 +68,21 @@ export class WebAuthnService {
       const uint8Array = new Uint8Array(buffer);
       const uint8ArrayToString = uint8Array.toString();
 
+      console.log(rawIDString);
+      console.log(uint8ArrayToString);
+      console.log(rawIDString === uint8ArrayToString);
+
       if (rawIDString === uint8ArrayToString) {
         dbAuthenticator = dev;
         break;
       }
     }
 
-    if (!dbAuthenticator) {
-      return { ok: false, message: "Authenticator is not registered with this site" };
+    console.log(dbAuthenticator);
+
+    if (!dbAuthenticator || dbAuthenticator === undefined) {
+      throw new UnauthorizedException("Wrong Credentials");
+      // return { ok: false, message: "Authenticator is not registered with this site" };
     }
 
     let verification;
